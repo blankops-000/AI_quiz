@@ -1,49 +1,92 @@
-
 // ============================================
 // FILE: src/services/aiService.js
 // ============================================
 import api from './api';
 
 const aiService = {
-  processRequest: async (requestData) => {
-    return await api.post('/ai/process', requestData);
-  },
-
-  textGeneration: async (prompt, options = {}) => {
-    return await api.post('/ai/process', {
-      requestType: 'text-generation',
-      input: { prompt, ...options }
+  // Text Analysis
+  analyzeText: async (text) => {
+    const response = await api.post('/ai/process', {
+      requestType: 'text_analysis',
+      input: { text }
     });
+    return response;
   },
 
-  imageAnalysis: async (imageUrl, analysisType = 'general') => {
-    return await api.post('/ai/process', {
-      requestType: 'image-analysis',
-      input: { imageUrl, analysisType }
+  // Sentiment Analysis
+  analyzeSentiment: async (text) => {
+    const response = await api.post('/ai/process', {
+      requestType: 'sentiment_analysis',
+      input: { text }
     });
+    return response;
   },
 
-  prediction: async (data, modelType) => {
-    return await api.post('/ai/process', {
-      requestType: 'prediction',
-      input: { data, modelType }
+  // Text Generation
+  generateText: async (prompt, options = {}) => {
+    const response = await api.post('/ai/process', {
+      requestType: 'text_generation',
+      input: { 
+        prompt, 
+        options: {
+          maxLength: options.maxLength || 100,
+          temperature: options.temperature || 0.7
+        }
+      }
     });
+    return response;
   },
 
-  recommendation: async (userId, context) => {
-    return await api.post('/ai/process', {
-      requestType: 'recommendation',
-      input: { userId, context }
+  // Quiz Generation
+  generateQuiz: async (topic, options = {}) => {
+    const response = await api.post('/ai/process', {
+      requestType: 'quiz_generation',
+      input: { 
+        topic, 
+        options: {
+          numQuestions: options.numQuestions || 5,
+          difficulty: options.difficulty || 'medium'
+        }
+      }
     });
+    return response;
   },
 
-  getHistory: async (params = {}) => {
-    const queryString = new URLSearchParams(params).toString();
-    return await api.get(`/ai/history${queryString ? `?${queryString}` : ''}`);
+  // Get Recommendations
+  getRecommendations: async (userId, preferences = {}) => {
+    const response = await api.post('/ai/process', {
+      requestType: 'recommendations',
+      input: { 
+        userId, 
+        preferences: {
+          ...preferences,
+          limit: preferences.limit || 10
+        }
+      }
+    });
+    return response;
   },
 
-  getRequestById: async (id) => {
-    return await api.get(`/ai/requests/${id}`);
+  // Get AI Request History
+  getRequestHistory: async (page = 1, limit = 10) => {
+    const response = await api.get(`/ai/history?page=${page}&limit=${limit}`);
+    return response;
+  },
+
+  // Get AI Request by ID
+  getRequestById: async (requestId) => {
+    const response = await api.get(`/ai/requests/${requestId}`);
+    return response;
+  },
+
+  // Health Check for AI Service
+  healthCheck: async () => {
+    try {
+      const response = await api.get('/ai/health');
+      return response;
+    } catch (error) {
+      throw new Error('AI service health check failed');
+    }
   }
 };
 

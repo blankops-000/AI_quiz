@@ -37,7 +37,7 @@ exports.getAllPosts = async (req, res, next) => {
     if (status) filter.status = status;
 
     const posts = await Post.find(filter)
-      .populate('author', 'username email')
+      .populate('author', 'name email')
       .limit(limit)
       .skip(skip)
       .sort({ createdAt: -1 });
@@ -63,7 +63,7 @@ exports.getAllPosts = async (req, res, next) => {
 exports.getPostById = async (req, res, next) => {
   try {
     const post = await Post.findById(req.params.id)
-      .populate('author', 'username email avatar');
+      .populate('author', 'name email avatar');
     
     if (!post) {
       return res.status(404).json(

@@ -6,12 +6,12 @@ const { body } = require('express-validator');
 const validate = require('../middleware/validationmiddleware');
 
 exports.validateRegistration = [
-  body('username')
+  body('name')
     .trim()
-    .isLength({ min: 3, max: 30 })
-    .withMessage('Username must be between 3 and 30 characters')
-    .matches(/^[a-zA-Z0-9_]+$/)
-    .withMessage('Username can only contain letters, numbers, and underscores'),
+    .isLength({ min: 2, max: 50 })
+    .withMessage('Name must be between 2 and 50 characters')
+    .matches(/^[a-zA-Z\s]+$/)
+    .withMessage('Name can only contain letters and spaces'),
   
   body('email')
     .trim()
@@ -29,16 +29,8 @@ exports.validateRegistration = [
 ];
 
 exports.validateLogin = [
-  body('email')
-    .trim()
-    .isEmail()
-    .withMessage('Please provide a valid email')
-    .normalizeEmail(),
-  
-  body('password')
-    .notEmpty()
-    .withMessage('Password is required'),
-  
+  body('email').notEmpty().withMessage('Email is required'),
+  body('password').notEmpty().withMessage('Password is required'),
   validate
 ];
 

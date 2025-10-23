@@ -29,13 +29,13 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (credentials) => {
     const response = await authService.login(credentials);
-    setUser(response.data.user);
+    setUser(response.data?.user || response.user);
     return response;
   };
 
   const register = async (userData) => {
     const response = await authService.register(userData);
-    setUser(response.data.user);
+    setUser(response.data?.user || response.user);
     return response;
   };
 

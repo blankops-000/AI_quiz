@@ -1,0 +1,35 @@
+{
+  "name": "ai-quiz-app",
+  "version": "1.0.0",
+  "description": "AI-powered quiz application with MERN stack",
+  "scripts": {
+    "install-all": "npm run install-backend && npm run install-frontend && npm run install-ai",
+    "install-backend": "cd ai_backend && npm install",
+    "install-frontend": "cd ai_frontend && npm install", 
+    "install-ai": "cd ai-service && pip install -r requirements.txt",
+    "start": "concurrently \"npm run start-backend\" \"npm run start-frontend\" \"npm run start-ai\"",
+    "start-backend": "cd ai_backend && npm run dev",
+    "start-frontend": "cd ai_frontend && npm start",
+    "start-ai": "cd ai-service/src && python app.py",
+    "dev": "npm run start",
+    "build": "cd ai_frontend && npm run build",
+    "test": "npm run test-backend && npm run test-frontend",
+    "test-backend": "cd ai_backend && npm test",
+    "test-frontend": "cd ai_frontend && npm test"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "keywords": [
+    "mern",
+    "ai",
+    "quiz",
+    "react",
+    "nodejs",
+    "mongodb",
+    "python",
+    "machine-learning"
+  ],
+  "author": "",
+  "license": "MIT"
+}

@@ -29,7 +29,11 @@ api.interceptors.request.use(
 
 // Response interceptor
 api.interceptors.response.use(
-  (response) => response.data,
+  (response) => {
+    // Backend returns {success: true, data: {...}, message: "..."}
+    // Return the whole response so services can access both data and message
+    return response.data;
+  },
   (error) => {
     if (error.response) {
       // Handle 401 Unauthorized

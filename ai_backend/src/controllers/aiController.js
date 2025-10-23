@@ -109,3 +109,24 @@ exports.getAIRequestById = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.healthCheck = async (req, res, next) => {
+  try {
+    const healthStatus = await aiService.healthCheck();
+    
+    res.status(200).json(
+      ApiResponse.success({
+        backend_status: 'healthy',
+        ai_service_status: healthStatus
+      }, 'AI service health check completed')
+    );
+  } catch (error) {
+    res.status(503).json(
+      ApiResponse.error('AI service unavailable', {
+        backend_status: 'healthy',
+        ai_service_status: 'unhealthy',
+        error: error.message
+      })
+    );
+  }
+};

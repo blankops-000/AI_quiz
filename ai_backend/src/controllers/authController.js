@@ -9,18 +9,18 @@ const logger = require('../utils/logger');
 
 exports.register = async (req, res, next) => {
   try {
-    const { username, email, password } = req.body;
+    const { name, email, password } = req.body;
 
     // Check if user exists
-    const existingUser = await User.findOne({ $or: [{ email }, { username }] });
+    const existingUser = await User.findOne({ $or: [{ email }, { name }] });
     if (existingUser) {
       return res.status(400).json(
-        ApiResponse.error('User with this email or username already exists')
+        ApiResponse.error('User with this email or name already exists')
       );
     }
 
     // Create user
-    const user = await User.create({ username, email, password });
+    const user = await User.create({ name, email, password });
 
     // Generate token
     const token = jwtConfig.generateToken({ id: user._id, role: user.role });
