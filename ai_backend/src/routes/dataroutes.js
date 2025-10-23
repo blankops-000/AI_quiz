@@ -10,6 +10,7 @@ const { validatePost } = require('../validators/dataValidator');
 
 router.get('/posts', dataController.getAllPosts);
 router.get('/posts/:id', dataController.getPostById);
+router.post('/sample-data', dataController.createSampleData);
 
 router.use(authMiddleware);
 

@@ -6,14 +6,24 @@ const express = require('express');
 const router = express.Router();
 const aiController = require('../controllers/aiController');
 const authMiddleware = require('../middleware/authMiddleware');
+const optionalAuthMiddleware = require('../middleware/optionalAuthMiddleware');
 const { validateAIRequest } = require('../validators/aiValidator');
 
 // Health check endpoint (no auth required)
 router.get('/health', aiController.healthCheck);
 
-router.use(authMiddleware);
+// Test endpoint to create user and get token
+router.post('/test-token', async (req, res) => {
+  const { createTestUser } = require('../utils/testToken');
+  const result = await createTestUser();
+  res.json({ success: true, data: result });
+});
 
-router.post('/process', validateAIRequest, aiController.processAIRequest);
+// AI process endpoint (optional auth)
+const optionalAuthMiddleware = require('../middleware/optionalAuthMiddleware');
+router.post('/process', optionalAuthMiddleware, aiController.processAIRequest);
+
+router.use(authMiddleware);
 router.get('/history', aiController.getAIRequestHistory);
 router.get('/requests/:id', aiController.getAIRequestById);
 

@@ -16,13 +16,13 @@ class AIService {
       logger.info(`Processing AI request: ${requestType}`);
       
       switch (requestType) {
-        case 'text_analysis':
+        case 'text-analysis':
           return await this.analyzeText(input.text);
-        case 'sentiment_analysis':
+        case 'sentiment-analysis':
           return await this.analyzeSentiment(input.text);
-        case 'text_generation':
+        case 'text-generation':
           return await this.generateText(input.prompt, input.options);
-        case 'quiz_generation':
+        case 'quiz-generation':
           return await this.generateQuiz(input.topic, input.options);
         case 'recommendations':
           return await this.getRecommendations(input.userId, input.preferences);
