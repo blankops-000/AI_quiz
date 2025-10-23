@@ -8,6 +8,9 @@ const aiController = require('../controllers/aiController');
 const authMiddleware = require('../middleware/authMiddleware');
 const { validateAIRequest } = require('../validators/aiValidator');
 
+// Health check endpoint (no auth required)
+router.get('/health', aiController.healthCheck);
+
 router.use(authMiddleware);
 
 router.post('/process', validateAIRequest, aiController.processAIRequest);

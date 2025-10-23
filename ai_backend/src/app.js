@@ -34,13 +34,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // Rate limiting middleware
-// Fix in app.js
-const rateLimiterModule = require('./middleware/rateLimitermiddleware');
-const rateLimiter = rateLimiterModule.default || rateLimiterModule;
-
-
-console.log('Rate limiter type:', typeof rateLimiter);
-console.log('Rate limiter content:', rateLimiter);
+const rateLimiter = require('./middleware/rateLimitermiddleware');
 app.use(rateLimiter);
 
 

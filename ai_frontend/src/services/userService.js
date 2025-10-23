@@ -7,19 +7,23 @@ import api from './api';
 const userService = {
   getAllUsers: async (params = {}) => {
     const queryString = new URLSearchParams(params).toString();
-    return await api.get(`/users${queryString ? `?${queryString}` : ''}`);
+    const response = await api.get(`/users${queryString ? `?${queryString}` : ''}`);
+    return response.data;
   },
 
   getUserById: async (id) => {
-    return await api.get(`/users/${id}`);
+    const response = await api.get(`/users/${id}`);
+    return response.data;
   },
 
   updateProfile: async (userData) => {
-    return await api.put('/users/profile', userData);
+    const response = await api.put('/users/profile', userData);
+    return response.data;
   },
 
   deleteUser: async (id) => {
-    return await api.delete(`/users/${id}`);
+    const response = await api.delete(`/users/${id}`);
+    return response;
   }
 };
 

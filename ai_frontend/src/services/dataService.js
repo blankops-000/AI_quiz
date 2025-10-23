@@ -8,27 +8,33 @@ const dataService = {
   // Posts
   getAllPosts: async (params = {}) => {
     const queryString = new URLSearchParams(params).toString();
-    return await api.get(`/data/posts${queryString ? `?${queryString}` : ''}`);
+    const response = await api.get(`/data/posts${queryString ? `?${queryString}` : ''}`);
+    return response.data; // Extract data from backend response structure
   },
 
   getPostById: async (id) => {
-    return await api.get(`/data/posts/${id}`);
+    const response = await api.get(`/data/posts/${id}`);
+    return response.data;
   },
 
   createPost: async (postData) => {
-    return await api.post('/data/posts', postData);
+    const response = await api.post('/data/posts', postData);
+    return response.data;
   },
 
   updatePost: async (id, postData) => {
-    return await api.put(`/data/posts/${id}`, postData);
+    const response = await api.put(`/data/posts/${id}`, postData);
+    return response.data;
   },
 
   deletePost: async (id) => {
-    return await api.delete(`/data/posts/${id}`);
+    const response = await api.delete(`/data/posts/${id}`);
+    return response;
   },
 
   likePost: async (id) => {
-    return await api.post(`/data/posts/${id}/like`);
+    const response = await api.post(`/data/posts/${id}/like`);
+    return response.data;
   }
 };
 
