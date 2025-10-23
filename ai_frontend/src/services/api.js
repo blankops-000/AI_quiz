@@ -1,8 +1,13 @@
+// ============================================
+// FILE: src/services/api.js
+// ============================================
 import axios from 'axios';
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
-  timeout: 10000,
+  baseURL: API_URL,
+  timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -17,18 +22,31 @@ api.interceptors.request.use(
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => {
+    return Promise.reject(error);
+  }
 );
 
 // Response interceptor
 api.interceptors.response.use(
-  (response) => response,
+  (response) => response.data,
   (error) => {
-    if (error.response?.status === 401) {
-      localStorage.removeItem('token');
-      window.location.href = '/login';
+    if (error.response) {
+      // Handle 401 Unauthorized
+      if (error.response.status === 401) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.href = '/login';
+      }
+      
+      // Return error message from backend
+      return Promise.reject(error.response.data);
+    } else if (error.request) {
+      // Network error
+      return Promise.reject({ message: 'Network error. Please check your connection.' });
+    } else {
+      return Promise.reject({ message: error.message });
     }
-    return Promise.reject(error);
   }
 );
 
