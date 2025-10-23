@@ -5,7 +5,7 @@
 const express = require('express');
 const router = express.Router();
 const aiController = require('../controllers/aiController');
-const authMiddleware = require('../middleware/auth.middleware');
+const authMiddleware = require('../middleware/authMiddleware');
 const { validateAIRequest } = require('../validators/aiValidator');
 
 router.use(authMiddleware);

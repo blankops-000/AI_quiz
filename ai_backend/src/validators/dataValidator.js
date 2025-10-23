@@ -3,7 +3,7 @@
 // FILE: src/validators/dataValidator.js
 // ============================================
 const { body, param } = require('express-validator');
-const validate = require('../middleware/validation.middleware');
+const validate = require('../middleware/validationmiddleware');
 
 exports.validatePost = [
   body('title')

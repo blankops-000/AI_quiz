@@ -5,7 +5,7 @@
 const express = require('express');
 const router = express.Router();
 const dataController = require('../controllers/dataController');
-const authMiddleware = require('../middleware/auth.middleware');
+const authMiddleware = require('../middleware/authMiddleware');
 const { validatePost } = require('../validators/dataValidator');
 
 router.get('/posts', dataController.getAllPosts);

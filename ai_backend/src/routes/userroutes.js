@@ -4,8 +4,8 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
-const authMiddleware = require('../middleware/auth.middleware');
-const { authorize } = require('../middleware/auth.middleware');
+const authMiddleware = require('../middleware/authMiddleware');
+const { authorize } = require('../middleware/authMiddleware');
 
 router.use(authMiddleware);
 

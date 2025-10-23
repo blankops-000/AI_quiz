@@ -3,7 +3,7 @@
 // FILE: src/validators/authValidator.js
 // ============================================
 const { body } = require('express-validator');
-const validate = require('../middleware/validation.middleware');
+const validate = require('../middleware/validationmiddleware');
 
 exports.validateRegistration = [
   body('username')
