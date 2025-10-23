@@ -3,6 +3,8 @@
 // ============================================
 import React, { useState, useEffect } from 'react';
 import aiService from '../services/aiService';
+import authService from '../services/authService';
+import LoginPrompt from '../components/common/LoginPrompt';
 import './AIAssistant.css';
 
 const AIAssistant = () => {
@@ -10,7 +12,8 @@ const AIAssistant = () => {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
-
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  
   // Text Analysis State
   const [textInput, setTextInput] = useState('');
 
@@ -23,6 +26,14 @@ const AIAssistant = () => {
   const [prompt, setPrompt] = useState('');
   const [maxLength, setMaxLength] = useState(100);
   const [temperature, setTemperature] = useState(0.7);
+
+  useEffect(() => {
+    setIsAuthenticated(authService.isAuthenticated());
+  }, []);
+
+  if (!isAuthenticated) {
+    return <LoginPrompt message="Please login to access AI features" />;
+  }
 
   const handleTextAnalysis = async () => {
     if (!textInput.trim()) {
@@ -151,13 +162,23 @@ const AIAssistant = () => {
             <h3>Quiz Generation</h3>
             <div className="input-group">
               <label>Topic:</label>
-              <input
-                type="text"
+              <select
                 value={quizTopic}
                 onChange={(e) => setQuizTopic(e.target.value)}
-                placeholder="Enter quiz topic..."
-                className="text-input"
-              />
+                className="select-input"
+              >
+                <option value="">Select a topic...</option>
+                <option value="Science">Science</option>
+                <option value="History">History</option>
+                <option value="Mathematics">Mathematics</option>
+                <option value="Geography">Geography</option>
+                <option value="Literature">Literature</option>
+                <option value="Technology">Technology</option>
+                <option value="Sports">Sports</option>
+                <option value="Art">Art</option>
+                <option value="Music">Music</option>
+                <option value="General Knowledge">General Knowledge</option>
+              </select>
             </div>
             <div className="input-row">
               <div className="input-group">

@@ -7,7 +7,7 @@ const aiService = {
   // Text Analysis
   analyzeText: async (text) => {
     const response = await api.post('/ai/process', {
-      requestType: 'text_analysis',
+      requestType: 'text-analysis',
       input: { text }
     });
     return response;
@@ -16,7 +16,7 @@ const aiService = {
   // Sentiment Analysis
   analyzeSentiment: async (text) => {
     const response = await api.post('/ai/process', {
-      requestType: 'sentiment_analysis',
+      requestType: 'sentiment-analysis',
       input: { text }
     });
     return response;
@@ -40,7 +40,7 @@ const aiService = {
   // Quiz Generation
   generateQuiz: async (topic, options = {}) => {
     const response = await api.post('/ai/process', {
-      requestType: 'quiz_generation',
+      requestType: 'quiz-generation',
       input: { 
         topic, 
         options: {

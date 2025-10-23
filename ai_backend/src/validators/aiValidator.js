@@ -9,7 +9,7 @@ exports.validateAIRequest = [
   body('requestType')
     .notEmpty()
     .withMessage('Request type is required')
-    .isIn(['text-generation', 'image-analysis', 'prediction', 'recommendation', 'other'])
+    .isIn(['text-analysis', 'sentiment-analysis', 'quiz-generation', 'text-generation', 'image-analysis', 'prediction', 'recommendation', 'other'])
     .withMessage('Invalid request type'),
   
   body('input')

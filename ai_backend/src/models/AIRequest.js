@@ -8,11 +8,11 @@ const aiRequestSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true
+    required: false
   },
   requestType: {
     type: String,
-    enum: ['text-generation', 'image-analysis', 'prediction', 'recommendation', 'other'],
+    enum: ['text-analysis', 'sentiment-analysis', 'quiz-generation', 'text-generation', 'image-analysis', 'prediction', 'recommendation', 'other'],
     required: true
   },
   input: {
