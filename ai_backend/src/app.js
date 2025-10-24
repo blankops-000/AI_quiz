@@ -11,6 +11,7 @@ const authRoutes = require('./routes/authroutes');
 const userRoutes = require('./routes/userroutes');
 const dataRoutes = require('./routes/dataroutes');
 const aiRoutes = require('./routes/airoutes');
+const adaptiveQuizRoutes = require('./routes/adaptiveQuizRoutes');
 
 // Import middleware
 const errorMiddleware = require('./middleware/errormiddleware');
@@ -43,6 +44,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/data', dataRoutes);
 app.use('/api/ai', aiRoutes);
+app.use('/api/adaptive-quiz', adaptiveQuizRoutes);
 
 // Health check
 app.get('/health', (req, res) => {

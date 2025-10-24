@@ -87,6 +87,44 @@ const aiService = {
     } catch (error) {
       throw new Error('AI service health check failed');
     }
+  },
+
+  // Adaptive quiz methods
+  generateAdaptiveQuiz: async (config) => {
+    const response = await api.post('/adaptive-quiz/generate', config);
+    return response;
+  },
+
+  processQuizResponse: async (responseData) => {
+    const response = await api.post('/adaptive-quiz/response', responseData);
+    return response;
+  },
+
+  completeQuiz: async (completionData) => {
+    const response = await api.post('/adaptive-quiz/complete', completionData);
+    return response;
+  },
+
+  getStudentProfile: async () => {
+    const response = await api.get('/adaptive-quiz/profile');
+    return response;
+  },
+
+  getQuizAnalytics: async (quizId) => {
+    const response = await api.get(`/adaptive-quiz/analytics/${quizId}`);
+    return response;
+  },
+
+  // Process AI request (generic)
+  processRequest: async (endpoint, data) => {
+    // Handle adaptive quiz endpoints
+    if (endpoint.startsWith('adaptive-quiz/')) {
+      const response = await api.post(`/${endpoint}`, data);
+      return response;
+    }
+    
+    const response = await api.post(`/ai/${endpoint}`, data);
+    return response;
   }
 };
 

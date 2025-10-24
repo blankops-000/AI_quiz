@@ -8,10 +8,11 @@ import LoginPrompt from '../components/common/LoginPrompt';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import QuizDisplay from '../components/ai/QuizDisplay';
 import ResultDisplay from '../components/ai/ResultDisplay';
+import AdaptiveQuiz from '../components/ai/AdaptiveQuiz';
 import '../components/ai/AIAssistant.css';
 
 const AIAssistant = () => {
-  const [activeTab, setActiveTab] = useState('text-analysis');
+  const [activeTab, setActiveTab] = useState('adaptive-quiz');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
@@ -126,6 +127,13 @@ const AIAssistant = () => {
 
   const renderTabContent = () => {
     switch (activeTab) {
+      case 'adaptive-quiz':
+        return (
+          <div className="tab-content">
+            <AdaptiveQuiz />
+          </div>
+        );
+        
       case 'text-analysis':
         return (
           <div className="tab-content">
@@ -300,6 +308,12 @@ const AIAssistant = () => {
         <h1>AI Assistant</h1>
         
         <div className="tabs">
+          <button
+            className={`tab ${activeTab === 'adaptive-quiz' ? 'active' : ''}`}
+            onClick={() => setActiveTab('adaptive-quiz')}
+          >
+            🎯 Adaptive Quiz
+          </button>
           <button
             className={`tab ${activeTab === 'text-analysis' ? 'active' : ''}`}
             onClick={() => setActiveTab('text-analysis')}

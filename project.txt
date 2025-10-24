@@ -1,0 +1,22 @@
+"""""""""'
+
+2.4.1 Proposed Generative AI Model for Supporting Personalized Learning
+
+To demonstrate how the proposed Generative AI-driven personalized assessment model operates, consider a third-year Computer Science student enrolled in an Algorithms and Data Structures course using Moodle LMS. First, the instructor sets the initial difficulty level to "medium" and enables the Adaptive Quiz Plugin to dynamically adjust questions based on student performance. The Pedagogical Engine leverages the Item Response Theory (IRT) to determine the learner’s current ability level. As the student attempts the test, the system dynamically adjusts the complexity of questions based on real-time performance.
+
+This adaptation is guided by Bloom’s Taxonomy, ensuring progression from simple recall questions (e.g., "Define a binary tree") to application-level coding exercises (e.g., "Implement a depth-first search algorithm") and then to problem-solving tasks. Task difficulty is adjusted dynamically to match the learner’s ability. If the learner struggles, the system provides simpler tasks; if they succeed, it offers more complex challenges.
+
+IRT evaluates the learner’s responses to provide detailed feedback on strengths and weaknesses, helping the student understand errors and improve their understanding. Educators can track progress through the Educator Side Dashboard, which visualizes student performance trends and identifies areas requiring intervention (Weng et al., 2024). By combining these two theories, the system delivers adaptive, meaningful, and progressive learning experiences that help students build mastery over time.
+
+Figure 2.1: Conceptual Model for Generative AI in Personalized Assessments
+
+The Plugin Core works as the coordinating center by linking with the Moodle Quiz Module with ChatGPT API and the pedagogical engine. The Pedagogical Engine is the heart of the system as it uses information from the Question Database, Student Profiles, and Performance Logs to help create content that meets each student’s needs. The pedagogical engine incorporates both Bloom’s Taxonomy and IRT to structure learning and adapt content based on performance. Bloom’s Taxonomy ensures that Learning objectives and tasks are aligned with Bloom’s cognitive levels while IRT dynamically assess the learner's ability level and match it with appropriately challenging tasks. Tasks and assessments are tagged with complexity of assessments, ensuring students engage with content at an appropriate cognitive level. When combined, IRT and Bloom’s Taxonomy create a framework for designing formative and diagnostic assessments that adapt to individual progress, enhancing both knowledge retention and problem-solving abilities in computer science education (Abunaseer, 2023).
+
+Table 2.2: Combined Role in Personalized Adaptive Quizzes (PAQs)
+
+Theory	Role	Impact
+IRT (Item Response Theory)	Adjusts difficulty dynamically	Provides measurement precision
+Bloom’s Taxonomy	Structures questions across cognitive levels	Encourages deep learning and critical thinking
+
+"""""""""
+check if the project folder meets the requirements in the text above add,update or fix the project to meet the requirements
