@@ -40,23 +40,20 @@ class PredictionController:
             questions = []
             
             for i in range(num_questions):
-                # Generate question using AI
-                prompt = f"Generate a {difficulty} difficulty multiple choice question about {topic}. Include 4 options (A, B, C, D) and indicate the correct answer."
-                
                 try:
                     question_text = self.openai_service.generate_quiz_question(topic, difficulty)
-                except:
-                    # Fallback to template-based generation
-                    question_text = self._generate_fallback_question(topic, difficulty, i + 1)
+                    parsed_question = self._parse_question(question_text, i + 1)
+                except Exception as e:
+                    logger.warning(f"AI generation failed for question {i+1}: {str(e)}")
+                    parsed_question = {
+                        'question': f"Sample {topic} question?",
+                        'options': ["A", "B", "C", "D"],
+                        'answer': 'A'
+                    }
                 
-                # Parse the generated question
-                parsed_question = self._parse_question(question_text, i + 1)
                 questions.append(parsed_question)
             
             return {
-                'topic': topic,
-                'difficulty': difficulty,
-                'total_questions': num_questions,
                 'questions': questions
             }
             
@@ -122,52 +119,44 @@ class PredictionController:
     def _parse_question(self, question_text, question_num):
         """Parse generated question text into structured format"""
         try:
-            lines = question_text.strip().split('\n')
+            lines = [line.strip() for line in question_text.strip().split('\n') if line.strip()]
             
-            # Extract question
-            question = lines[0] if lines else f"Question {question_num} about the topic"
-            
-            # Extract options
+            question = ""
             options = []
             correct_answer = 'A'
+            explanation = ""
             
-            for line in lines[1:]:
-                line = line.strip()
-                if line.startswith(('A)', 'B)', 'C)', 'D)')):
-                    options.append({
-                        'id': line[0],
-                        'text': line[3:].strip()
-                    })
+            for line in lines:
+                if line.startswith('Question:'):
+                    question = line.replace('Question:', '').strip()
+                elif line.startswith(('A)', 'B)', 'C)', 'D)')):
+                    option_id = line[0]
+                    option_text = line[2:].strip() if line[1] == ')' else line[3:].strip()
+                    options.append(option_text)
                 elif line.lower().startswith('correct answer:'):
-                    correct_answer = line.split(':')[1].strip().upper()
+                    answer_part = line.split(':', 1)[1].strip().upper()
+                    correct_answer = answer_part[0] if answer_part else 'A'
+                elif line.lower().startswith('explanation:'):
+                    explanation = line.split(':', 1)[1].strip()
             
-            # Ensure we have 4 options
-            while len(options) < 4:
-                option_id = chr(65 + len(options))  # A, B, C, D
-                options.append({
-                    'id': option_id,
-                    'text': f"Option {option_id}"
-                })
+            # Fallback if parsing fails
+            if not question:
+                question = f"What is an important concept in the given topic?"
+            if len(options) < 4:
+                options = ["Option A", "Option B", "Option C", "Option D"]
+            if not explanation:
+                explanation = "This tests knowledge of the topic."
             
             return {
-                'id': question_num,
                 'question': question,
                 'options': options[:4],
-                'correct_answer': correct_answer,
-                'explanation': f"This question tests knowledge about the given topic."
+                'answer': correct_answer
             }
             
         except Exception as e:
             logger.error(f"Question parsing failed: {str(e)}")
             return {
-                'id': question_num,
-                'question': f"Sample question {question_num}",
-                'options': [
-                    {'id': 'A', 'text': 'Option A'},
-                    {'id': 'B', 'text': 'Option B'},
-                    {'id': 'C', 'text': 'Option C'},
-                    {'id': 'D', 'text': 'Option D'}
-                ],
-                'correct_answer': 'A',
-                'explanation': 'Sample explanation'
+                'question': f"Sample Mathematics question?",
+                'options': ["A", "B", "C", "D"],
+                'answer': 'A'
             }

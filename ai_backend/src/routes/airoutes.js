@@ -13,14 +13,10 @@ const { validateAIRequest } = require('../validators/aiValidator');
 router.get('/health', aiController.healthCheck);
 
 // Test endpoint to create user and get token
-router.post('/test-token', async (req, res) => {
-  const { createTestUser } = require('../utils/testToken');
-  const result = await createTestUser();
-  res.json({ success: true, data: result });
-});
+const testController = require('../controllers/testController');
+router.post('/test-token', testController.createTestUser);
 
 // AI process endpoint (optional auth)
-const optionalAuthMiddleware = require('../middleware/optionalAuthMiddleware');
 router.post('/process', optionalAuthMiddleware, aiController.processAIRequest);
 
 router.use(authMiddleware);

@@ -5,7 +5,10 @@ import React, { useState, useEffect } from 'react';
 import aiService from '../services/aiService';
 import authService from '../services/authService';
 import LoginPrompt from '../components/common/LoginPrompt';
-import './AIAssistant.css';
+import LoadingSpinner from '../components/common/LoadingSpinner';
+import QuizDisplay from '../components/ai/QuizDisplay';
+import ResultDisplay from '../components/ai/ResultDisplay';
+import '../components/ai/AIAssistant.css';
 
 const AIAssistant = () => {
   const [activeTab, setActiveTab] = useState('text-analysis');
@@ -273,12 +276,20 @@ const AIAssistant = () => {
   const renderResult = () => {
     if (!result) return null;
 
+    // Special handling for quiz results
+    if (activeTab === 'quiz-generation' && result.questions) {
+      return (
+        <div className="result-section">
+          <h4>Generated Quiz:</h4>
+          <QuizDisplay quizData={result} />
+        </div>
+      );
+    }
+
     return (
       <div className="result-section">
         <h4>Result:</h4>
-        <div className="result-content">
-          <pre>{JSON.stringify(result, null, 2)}</pre>
-        </div>
+        <ResultDisplay result={result} type={activeTab} />
       </div>
     );
   };

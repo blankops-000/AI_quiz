@@ -10,7 +10,7 @@
     "start": "concurrently \"npm run start-backend\" \"npm run start-frontend\" \"npm run start-ai\"",
     "start-backend": "cd ai_backend && npm run dev",
     "start-frontend": "cd ai_frontend && npm start",
-    "start-ai": "cd ai-service/src && python app.py",
+    "start-ai": "cd ai-service/src && python app-enhanced.py",
     "dev": "npm run start",
     "build": "cd ai_frontend && npm run build",
     "test": "npm run test-backend && npm run test-frontend",

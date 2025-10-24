@@ -1,6 +1,7 @@
 import os
 import logging
-import openai
+import json
+from openai import OpenAI
 from config.ai_config import AI_CONFIG
 
 logger = logging.getLogger(__name__)
@@ -15,8 +16,7 @@ class OpenAIService:
         """Initialize OpenAI client"""
         try:
             if self.api_key:
-                openai.api_key = self.api_key
-                self.client = openai
+                self.client = OpenAI(api_key=self.api_key)
                 logger.info("OpenAI client initialized successfully")
             else:
                 logger.warning("OpenAI API key not found. OpenAI services will be unavailable.")
@@ -29,16 +29,16 @@ class OpenAIService:
             if not self.client or not self.api_key:
                 raise Exception("OpenAI client not available")
             
-            response = self.client.Completion.create(
-                engine=AI_CONFIG['openai']['text_model'],
-                prompt=prompt,
+            response = self.client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "user", "content": prompt}
+                ],
                 max_tokens=max_length,
-                temperature=temperature,
-                n=1,
-                stop=None
+                temperature=temperature
             )
             
-            return response.choices[0].text.strip()
+            return response.choices[0].message.content.strip()
             
         except Exception as e:
             logger.error(f"OpenAI text generation failed: {str(e)}")
@@ -50,30 +50,32 @@ class OpenAIService:
             if not self.client or not self.api_key:
                 raise Exception("OpenAI client not available")
             
-            prompt = f"""Generate a {difficulty} difficulty multiple choice question about {topic}.
-            
-Format the response as:
-Question: [Your question here]
-A) [Option A]
-B) [Option B]
-C) [Option C]
-D) [Option D]
-Correct Answer: [A/B/C/D]
-Explanation: [Brief explanation]
+            prompt = f"""Create a {difficulty} difficulty multiple choice question about {topic}.
 
-Topic: {topic}
-Difficulty: {difficulty}"""
+Provide a well-crafted question with 4 distinct options where only one is clearly correct.
+Format your response exactly as follows:
+
+Question: [Write a clear, specific question]
+A) [First option]
+B) [Second option] 
+C) [Third option]
+D) [Fourth option]
+Correct Answer: [A/B/C/D]
+Explanation: [Brief explanation of why the answer is correct]
+
+Make sure the question tests actual knowledge about {topic} at {difficulty} level."""
             
-            response = self.client.Completion.create(
-                engine=AI_CONFIG['openai']['text_model'],
-                prompt=prompt,
-                max_tokens=300,
-                temperature=0.7,
-                n=1,
-                stop=None
+            response = self.client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "system", "content": "You are an expert quiz creator. Generate high-quality, educational multiple choice questions."},
+                    {"role": "user", "content": prompt}
+                ],
+                max_tokens=400,
+                temperature=0.7
             )
             
-            return response.choices[0].text.strip()
+            return response.choices[0].message.content.strip()
             
         except Exception as e:
             logger.error(f"OpenAI quiz generation failed: {str(e)}")
@@ -94,16 +96,16 @@ Difficulty: {difficulty}"""
             
             prompt = prompts.get(analysis_type, prompts['general'])
             
-            response = self.client.Completion.create(
-                engine=AI_CONFIG['openai']['text_model'],
-                prompt=prompt,
+            response = self.client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "user", "content": prompt}
+                ],
                 max_tokens=200,
-                temperature=0.3,
-                n=1,
-                stop=None
+                temperature=0.3
             )
             
-            return response.choices[0].text.strip()
+            return response.choices[0].message.content.strip()
             
         except Exception as e:
             logger.error(f"OpenAI text analysis failed: {str(e)}")
@@ -127,16 +129,16 @@ Please provide recommendations in the following format:
 4. [Recommendation 4] - [Brief explanation]
 5. [Recommendation 5] - [Brief explanation]"""
             
-            response = self.client.Completion.create(
-                engine=AI_CONFIG['openai']['text_model'],
-                prompt=prompt,
+            response = self.client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "user", "content": prompt}
+                ],
                 max_tokens=400,
-                temperature=0.7,
-                n=1,
-                stop=None
+                temperature=0.7
             )
             
-            return response.choices[0].text.strip()
+            return response.choices[0].message.content.strip()
             
         except Exception as e:
             logger.error(f"OpenAI recommendations failed: {str(e)}")
