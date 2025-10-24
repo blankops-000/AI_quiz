@@ -41,24 +41,8 @@ exports.processAIRequest = async (req, res, next) => {
     const startTime = Date.now();
 
     try {
-      // Mock AI processing
-      let result;
-      switch (requestType) {
-        case 'text-analysis':
-          result = { sentiment: 'positive', confidence: 0.85, keywords: ['example', 'text'] };
-          break;
-        case 'sentiment-analysis':
-          result = { sentiment: 'positive', score: 0.8 };
-          break;
-        case 'quiz-generation':
-          result = { questions: [{ question: `Sample ${input.topic} question?`, options: ['A', 'B', 'C', 'D'], answer: 'A' }] };
-          break;
-        case 'text-generation':
-          result = { text: `Generated text based on: ${input.prompt}` };
-          break;
-        default:
-          result = { message: 'Mock AI response' };
-      }
+      // Call actual AI service
+      const result = await aiService.processRequest(requestType, input);
       
       const processingTime = Date.now() - startTime;
 
